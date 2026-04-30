@@ -1,76 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../theme/app_theme.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
-}
-
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final emailController = TextEditingController();
-  final newPassController = TextEditingController();
-
-  Future<void> resetPassword() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    String? savedEmail = prefs.getString('email');
-
-    if (emailController.text.trim() != savedEmail) {
-      showMessage("Email tidak ditemukan");
-      return;
-    }
-
-    if (newPassController.text.length < 6) {
-      showMessage("Password minimal 6 karakter");
-      return;
-    }
-
-    await prefs.setString('password', newPassController.text.trim());
-
-    showMessage("Password berhasil diubah");
-
-    Navigator.pop(context);
-  }
-
-  void showMessage(String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
-  }
+class ForgotPasswordScreen extends StatelessWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5EBDD),
-      appBar: AppBar(title: Text("Lupa Password")),
-      body: Center(
-        child: Container(
-          width: 300,
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Reset Password",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: "Email"),
+      backgroundColor: AppColors.bgPrimary,
+      appBar: AppBar(
+        backgroundColor: AppColors.bgPrimary,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Lupa Password',
+            style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Reset Password',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            const Text('Masukkan email untuk reset password',
+                style: TextStyle(color: AppColors.textSecondary)),
+            const SizedBox(height: 28),
+            TextField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: 'Email',
+                prefixIcon: Icon(Icons.email_outlined, color: AppColors.iconGrey),
               ),
-
-              TextField(
-                controller: newPassController,
-                obscureText: true,
-                decoration: InputDecoration(labelText: "Password Baru"),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity, height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Link reset dikirim ke email')),
+                  );
+                  Navigator.pop(context);
+                },
+                child: const Text('Kirim Link Reset'),
               ),
-
-              SizedBox(height: 20),
-
-              ElevatedButton(
-                onPressed: resetPassword,
-                child: Text("Simpan"),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

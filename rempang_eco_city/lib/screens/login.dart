@@ -1,170 +1,189 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../theme/app_theme.dart';
+import '../widgets/app_logo.dart';
+import '../providers/user_provider.dart';
 import 'register.dart';
 import 'forgot_password.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _passCtrl  = TextEditingController();
+  bool _obscure    = true;
+  String? _errorMsg;
 
-  // 🔥 LOGIN MULTI USER
-  Future<void> login() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    List<String> users = prefs.getStringList('users') ?? [];
-
-    String inputEmail = emailController.text.trim();
-    String inputPassword = passwordController.text.trim();
-
-    if (inputEmail.isEmpty || inputPassword.isEmpty) {
-      showMessage("Semua field wajib diisi");
-      return;
-    }
-
-    for (var user in users) {
-      final data = MapEncoding.fromUriEncoded(user);
-
-      if (data["email"] == inputEmail &&
-          data["password"] == inputPassword) {
-
-        await prefs.setBool('isLogin', true);
-        await prefs.setString('role', data["role"]!);
-
-        if (data["role"] == "produsen") {
-          Navigator.pushReplacementNamed(context, '/produsen');
-        } else {
-          Navigator.pushReplacementNamed(context, '/mitra');
-        }
-        return;
-      }
-    }
-
-    showMessage("Akun tidak ditemukan");
+  @override
+  void dispose() {
+    _emailCtrl.dispose();
+    _passCtrl.dispose();
+    super.dispose();
   }
 
-  void showMessage(String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
+  void _login() {
+    setState(() => _errorMsg = null);
+    if (_emailCtrl.text.trim().isEmpty || _passCtrl.text.isEmpty) {
+      setState(() => _errorMsg = 'Email dan password wajib diisi');
+      return;
+    }
+    final user = context
+        .read<UserProvider>()
+        .login(_emailCtrl.text.trim(), _passCtrl.text);
+    if (user == null) {
+      setState(() => _errorMsg = 'Email atau password salah');
+      return;
+    }
+    // Semua user yang login adalah mitra hilir
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const HomeScreen()),
+      (_) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: 320,
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Color(0xFFF1E4CF),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Selamat Datang!",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: 20),
+      backgroundColor: AppColors.bgPrimary,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const AppLogo(height: 80, white: false),
+                const SizedBox(height: 32),
 
-              // EMAIL
-              TextField(
-                controller: emailController,
-                decoration: inputStyle("Email"),
-              ),
-              SizedBox(height: 10),
+                const Text(
+                  'Selamat Datang',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Masuk ke akun kamu',
+                  style: TextStyle(
+                      color: AppColors.textSecondary, fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 40),
 
-              // PASSWORD
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: inputStyle("Kata Sandi"),
-              ),
-              SizedBox(height: 10),
-
-              // LUPA PASSWORD
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/forgot'),
-                  child: Text(
-                    "Lupa Kata Sandi?",
-                    style: TextStyle(fontSize: 12, color: Colors.blue),
+                TextField(
+                  controller: _emailCtrl,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    hintText: 'Email',
+                    prefixIcon: Icon(Icons.email_outlined,
+                        color: AppColors.iconGrey),
                   ),
                 ),
-              ),
-              SizedBox(height: 15),
+                const SizedBox(height: 14),
 
-              // LOGIN BUTTON
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: login,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[200],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  child: Text("Masuk"),
-                ),
-              ),
-              SizedBox(height: 10),
-
-              // REGISTER
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Belum memiliki akun? "),
-                  GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/register'),
-                    child: Text(
-                      "Daftar Sekarang",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+                TextField(
+                  controller: _passCtrl,
+                  obscureText: _obscure,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    prefixIcon: const Icon(Icons.lock_outline,
+                        color: AppColors.iconGrey),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscure
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: AppColors.iconGrey,
                       ),
+                      onPressed: () =>
+                          setState(() => _obscure = !_obscure),
                     ),
+                  ),
+                ),
+
+                if (_errorMsg != null) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.deleteRed.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color:
+                              AppColors.deleteRed.withOpacity(0.3)),
+                    ),
+                    child: Text(_errorMsg!,
+                        style: const TextStyle(
+                            color: AppColors.deleteRed,
+                            fontSize: 13)),
                   ),
                 ],
-              )
-            ],
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              const ForgotPasswordScreen()),
+                    ),
+                    child: const Text('Lupa Password?',
+                        style: TextStyle(
+                            color: AppColors.blue, fontSize: 13)),
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _login,
+                    child: const Text('Masuk',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Belum punya akun? ',
+                        style: TextStyle(
+                            color: AppColors.textSecondary)),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const RegisterScreen()),
+                      ),
+                      child: const Text('Daftar',
+                          style: TextStyle(
+                              color: AppColors.blue,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  InputDecoration inputStyle(String hint) {
-    return InputDecoration(
-      hintText: hint,
-      filled: true,
-      fillColor: Colors.grey[300],
-      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25),
-        borderSide: BorderSide.none,
-      ),
-    );
-  }
-}
-
-// 🔥 HELPER
-extension MapEncoding on Map<String, dynamic> {
-  static Map<String, dynamic> fromUriEncoded(String encoded) {
-    final decoded = Uri.splitQueryString(encoded);
-    return decoded.map((k, v) => MapEntry(k, v));
-  }
-
-  static String toUriEncoded(Map<String, dynamic> map) {
-    return map.entries
-        .map((e) =>
-            "${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}")
-        .join("&");
   }
 }
