@@ -1,43 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-// Screens
+import 'package:provider/provider.dart';
+import 'theme/app_theme.dart';
+import 'providers/user_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/order_provider.dart';
 import 'screens/splash.dart';
-import 'screens/login.dart';
-import 'screens/register.dart';
-import 'screens/forgot_password.dart';
-import 'screens/dashboard_produsen.dart';
-import 'screens/dashboard_mitra.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const ExcyApp());
 }
 
-class MyApp extends StatelessWidget {
+class ExcyApp extends StatelessWidget {
+  const ExcyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-
-      // 🔥 THEME
-      theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Excy',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.theme,
+        home: const SplashScreen(),
       ),
-
-      // 🔥 START APP
-      home: SplashScreen(),
-
-      // 🔥 ROUTES (LENGKAP)
-      routes: {
-        '/login': (_) => LoginScreen(),
-        '/register': (_) => RegisterScreen(),
-        '/forgot': (_) => ForgotPasswordScreen(),
-
-        // 🔥 TAMBAHAN (biar bisa dipanggil dari mana aja)
-        '/mitra': (_) => DashboardMitra(),
-        '/produsen': (_) => DashboardProdusen(),
-      },
     );
   }
 }

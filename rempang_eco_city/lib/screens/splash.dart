@@ -1,80 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../theme/app_theme.dart';
+import '../widgets/app_logo.dart';
 import 'login.dart';
-import 'dashboard_mitra.dart';
-import 'dashboard_produsen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
-    checkLogin();
-  }
-
-  Future<void> checkLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    bool isLogin = prefs.getBool('isLogin') ?? false;
-    String role = prefs.getString('role') ?? "mitra";
-
-    await Future.delayed(Duration(seconds: 3));
-
-    if (isLogin) {
-      if (role == "produsen") {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => DashboardProdusen()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => DashboardMitra()),
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
       }
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => LoginScreen()),
-      );
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5EBDD),
-
+      backgroundColor: AppColors.blue,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 🌿 ICON
-            Icon(Icons.eco, size: 70, color: Colors.green),
-
-            SizedBox(height: 15),
-
-            // 🌿 TITLE
-            Text(
-              "Rempang Eco City 🌿",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(24),
               ),
+              child: const AppLogo(height: 64, white: false),
             ),
-
-            SizedBox(height: 10),
-
-            Text(
-              "Marketplace Hasil Laut",
+            const SizedBox(height: 24),
+            const Text(
+              'Rempang Eco-City',
               style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[700],
+                color: AppColors.white,
+                fontSize: 15,
+                letterSpacing: 1.2,
               ),
             ),
           ],
