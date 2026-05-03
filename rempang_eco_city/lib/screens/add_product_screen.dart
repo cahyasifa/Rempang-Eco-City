@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AddProductScreen extends StatefulWidget {
+  const AddProductScreen({Key? key}) : super(key: key); // ← tambah const constructor
+
   @override
-  _AddProductScreenState createState() => _AddProductScreenState();
+  State<AddProductScreen> createState() => _AddProductScreenState();
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
@@ -12,21 +14,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Tambah Produk")),
+      appBar: AppBar(title: const Text("Tambah Produk")),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
               controller: nameController,
-              decoration: InputDecoration(labelText: "Nama Produk"),
+              decoration: const InputDecoration(labelText: "Nama Produk"),
             ),
             TextField(
               controller: stockController,
-              decoration: InputDecoration(labelText: "Stok"),
+              decoration: const InputDecoration(labelText: "Stok"),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 final product = {
@@ -35,11 +37,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 };
                 Navigator.pop(context, product);
               },
-              child: Text("Simpan"),
+              child: const Text("Simpan"),
             ),
           ],
         ),
       ),
     );
   }
-} 
+}

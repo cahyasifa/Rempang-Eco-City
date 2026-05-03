@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'home_screen.dart';
 
-class RoleSwitchScreen extends StatelessWidget {
-  const RoleSwitchScreen({Key? key}) : super(key: key);
+class RoleSwitch extends StatelessWidget { // ← ganti nama class
+  const RoleSwitch({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

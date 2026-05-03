@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/produksi_provider.dart';
-import '../models/produksi_model.dart';
-import '../theme/app_colors.dart';
-import '../widgets/shared_widgets.dart';
-import 'input_produksi_screen.dart'; // ← import langsung
+import 'package:rempang_eco_city/providers/produksi_provider.dart';
+import 'package:rempang_eco_city/models/produksi_model.dart';
+import 'package:rempang_eco_city/theme/app_theme.dart';
+import 'package:rempang_eco_city/widgets/shared_widget.dart';
+import 'input_produksi_screen.dart';
 
 class DaftarProduksiScreen extends StatefulWidget {
   const DaftarProduksiScreen({super.key});
@@ -256,7 +256,7 @@ class _ProduksiCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        const AppDivider(),
+        AppDivider(),
         const SizedBox(height: 10),
         Row(children: [
           _InfoCell(label: 'Jumlah',      value: '${item.jumlahKg.toStringAsFixed(0)} kg'),

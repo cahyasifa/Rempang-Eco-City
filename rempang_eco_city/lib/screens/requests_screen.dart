@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RequestsScreen extends StatelessWidget {
-  final List<Map<String, String>> requests = [
+  const RequestsScreen({Key? key}) : super(key: key); // ← tambah const constructor
+
+  final List<Map<String, String>> requests = const [   // ← tambah const di sini
     {"mitra": "Mitra A", "produk": "Ikan Selar", "jumlah": "5kg"},
     {"mitra": "Mitra B", "produk": "Udang", "jumlah": "3kg"},
   ];
@@ -13,7 +15,7 @@ class RequestsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final req = requests[index];
         return Card(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: ListTile(
             title: Text(req["produk"]!),
             subtitle: Text("Mitra: ${req["mitra"]} | Jumlah: ${req["jumlah"]}"),

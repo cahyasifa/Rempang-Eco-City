@@ -6,6 +6,8 @@ import '../providers/user_provider.dart';
 import 'register.dart';
 import 'forgot_password.dart';
 import 'home_screen.dart';
+import 'admin/admin_dashboard_screen.dart';
+import 'produsen/dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -27,25 +29,35 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() {
-    setState(() => _errorMsg = null);
-    if (_emailCtrl.text.trim().isEmpty || _passCtrl.text.isEmpty) {
-      setState(() => _errorMsg = 'Email dan password wajib diisi');
-      return;
-    }
-    final user = context
-        .read<UserProvider>()
-        .login(_emailCtrl.text.trim(), _passCtrl.text);
-    if (user == null) {
-      setState(() => _errorMsg = 'Email atau password salah');
-      return;
-    }
-    // Semua user yang login adalah mitra hilir
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
-      (_) => false,
-    );
+  setState(() => _errorMsg = null);
+  if (_emailCtrl.text.trim().isEmpty || _passCtrl.text.isEmpty) {
+    setState(() => _errorMsg = 'Email dan password wajib diisi');
+    return;
   }
+  final user = context
+      .read<UserProvider>()
+      .login(_emailCtrl.text.trim(), _passCtrl.text);
+  if (user == null) {
+    setState(() => _errorMsg = 'Email atau password salah');
+    return;
+  }
+
+  // Redirect berdasarkan role
+  Widget destination;
+  if (user.role == 'admin') {
+    destination = AdminDashboardScreen();
+  } else if (user.role == 'produsen') {
+    destination = const DashboardScreen();
+  } else {
+    destination = const HomeScreen();
+  }
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (_) => destination),
+    (_) => false,
+  );
+}
 
   @override
   Widget build(BuildContext context) {

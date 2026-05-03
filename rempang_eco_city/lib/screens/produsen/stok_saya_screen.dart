@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/produksi_provider.dart';
-import '../models/produksi_model.dart';
-import '../theme/app_colors.dart';
-import '../widgets/shared_widgets.dart';
+
+import 'package:rempang_eco_city/providers/produksi_provider.dart';
+import 'package:rempang_eco_city/models/produksi_model.dart';
+import 'package:rempang_eco_city/theme/app_theme.dart'; // ✅ FIX
+import 'package:rempang_eco_city/widgets/shared_widget.dart'; // ✅
 
 class StokSayaScreen extends StatefulWidget {
   const StokSayaScreen({super.key});
@@ -181,12 +182,12 @@ class _StokSayaScreenState extends State<StokSayaScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const AppDivider(),
+                AppDivider(),
                 const SizedBox(height: 12),
 
                 // ── List stok ────────────────────────────────────────────
                 if (filtered.isEmpty)
-                  const AppCard(
+                   AppCard(
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 12),
@@ -270,7 +271,7 @@ class _StokSayaScreenState extends State<StokSayaScreen> {
                   }),
 
                 const SizedBox(height: 4),
-                const AppDivider(),
+                AppDivider(),
                 const SizedBox(height: 16),
                 PrimaryButton(
                   '+ Input Produksi Baru',

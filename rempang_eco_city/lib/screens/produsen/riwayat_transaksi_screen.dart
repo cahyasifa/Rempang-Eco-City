@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/transaksi_provider.dart';
-import '../theme/app_colors.dart';
-import '../widgets/shared_widgets.dart';
+i
 
 class RiwayatTransaksiScreen extends StatefulWidget {
   const RiwayatTransaksiScreen({super.key});
@@ -38,7 +34,7 @@ class _RiwayatTransaksiScreenState extends State<RiwayatTransaksiScreen> {
             ]),
           ),
           const SizedBox(height: 12),
-          const AppDivider(),
+          AppDivider(),
           const SizedBox(height: 12),
 
           if (filtered.isEmpty)
@@ -87,7 +83,7 @@ class _RiwayatTransaksiScreenState extends State<RiwayatTransaksiScreen> {
                     // Alasan tolak (tampil jika ada)
                     if (t.status == 'Ditolak' && t.alasanTolak != null) ...[
                       const SizedBox(height: 10),
-                      const AppDivider(),
+                      AppDivider(),
                       const SizedBox(height: 8),
                       Container(
                         width: double.infinity,

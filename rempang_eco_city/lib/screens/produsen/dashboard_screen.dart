@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/produksi_provider.dart';
-import '../theme/app_colors.dart';
-import '../widgets/shared_widgets.dart';
+import 'package:rempang_eco_city/providers/produksi_provider.dart';
+import 'package:rempang_eco_city/theme/app_theme.dart';
+import 'package:rempang_eco_city/widgets/shared_widget.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -44,7 +44,7 @@ class DashboardScreen extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           if (provider.list.isEmpty)
-            const AppCard(child: Center(child: Text('Belum ada aktivitas', style: TextStyle(color: AppColors.textSecondary, fontSize: 13))))
+            AppCard(child: Center(child: Text('Belum ada aktivitas', style: TextStyle(color: AppColors.textSecondary, fontSize: 13))))
           else
             ...provider.list.take(3).map((item) => Padding(
                   padding: const EdgeInsets.only(bottom: 8),

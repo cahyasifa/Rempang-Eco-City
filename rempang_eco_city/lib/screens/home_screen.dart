@@ -10,6 +10,8 @@ import 'orders_screen.dart';
 import 'history_screen.dart';
 import 'profile_screen.dart';
 import 'product_detail_screen.dart';
+import 'admin/admin_dashboard_screen.dart';   
+import 'produsen/dashboard_screen.dart'; 
 
 final List<ProductModel> allProducts = [
   ProductModel(id: '1',  name: 'Ikan Selar Kuning', price: 30000,  stock: 25, category: 'Ikan',  image: 'assets/images/udang.jpg'),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/produksi_provider.dart';
-import '../models/produksi_model.dart';
-import '../theme/app_colors.dart';
-import '../widgets/shared_widgets.dart';
-import 'daftar_produksi_screen.dart';
+import 'package:rempang_eco_city/providers/produksi_provider.dart';
+import 'package:rempang_eco_city/models/produksi_model.dart';
+import 'package:rempang_eco_city/theme/app_theme.dart';
+import 'package:rempang_eco_city/widgets/shared_widget.dart';
+import 'package:rempang_eco_city/screens/produsen/daftar_produksi_screen.dart';
 
 class InputProduksiScreen extends StatefulWidget {
   const InputProduksiScreen({super.key});
