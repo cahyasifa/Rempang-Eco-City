@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "rempang_eco_city",
     "short_name": "rempang_eco_city",
+=======
+    "name": "flutter_application_1",
+    "short_name": "flutter_application_1",
+>>>>>>> 19064cfb96ea37688aad651b35d13aaf786d65ef
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

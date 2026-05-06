@@ -15,7 +15,11 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
                BuildableName = "rempang_eco_city.app"
+=======
+               BuildableName = "flutter_application_1.app"
+>>>>>>> 19064cfb96ea37688aad651b35d13aaf786d65ef
                BlueprintName = "Runner"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
@@ -31,7 +35,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "rempang_eco_city.app"
+=======
+            BuildableName = "flutter_application_1.app"
+>>>>>>> 19064cfb96ea37688aad651b35d13aaf786d65ef
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -66,7 +74,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "rempang_eco_city.app"
+=======
+            BuildableName = "flutter_application_1.app"
+>>>>>>> 19064cfb96ea37688aad651b35d13aaf786d65ef
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -83,7 +95,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "rempang_eco_city.app"
+=======
+            BuildableName = "flutter_application_1.app"
+>>>>>>> 19064cfb96ea37688aad651b35d13aaf786d65ef
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
